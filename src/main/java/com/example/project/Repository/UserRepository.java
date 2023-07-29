@@ -1,6 +1,5 @@
 package com.example.project.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +17,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     //for login
      @Query("SELECT u FROM User u WHERE u.email=?1")
      Optional<User> findUserByEmail(String email);  
+     
+     @Query("SELECT name FROM User u WHERE u.userId=?1")
+     String findUserNameById(int userId);
 }

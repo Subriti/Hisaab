@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-@JsonPropertyOrder({ "group_id, group_name, group_admin" })
+@JsonPropertyOrder({ "group_id, group_name, group_admin, created_at" })
 
 @Entity
 @Table(name = "Groups")

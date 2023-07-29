@@ -31,6 +31,11 @@ public class MemberListController {
         return MemberListService.getGroupMembers(groupId);
     }
     
+    @GetMapping("/getMemberCount/{groupId}")
+    public int getMemberCount(Group groupId) {
+        return MemberListService.getGroupMembers(groupId).size();
+    }
+    
     @PostMapping("/addMember")
     public JSONObject addMember(@RequestBody MemberList memberList) {
         return MemberListService.addMember(memberList);

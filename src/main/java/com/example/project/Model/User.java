@@ -1,7 +1,6 @@
 package com.example.project.Model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -59,8 +56,7 @@ public class User implements Serializable {
        }
 
    
-    public User(String userName, String name, String email, String password, String phoneNumber, String location,
-            Date birth_date, Date signupDate, String profilePicture, String fcmToken, Boolean isAdmin, Boolean hideEmail, Boolean hidePhone) {
+    public User(String userName, String name, String email, String password) {
         super();
         this.userName = userName;
         this.email = email;
