@@ -3,6 +3,7 @@ package com.example.project.Service;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,6 +16,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.project.Model.ActivityLog;
 import com.example.project.Model.Category;
 import com.example.project.Model.PersonalExpense;
 import com.example.project.Model.User;
@@ -25,9 +27,14 @@ public class PersonalExpenseService {
 
     private final PersonalExpenseRepository PersonalExpenseRepository;
 
+    private final ActivityLogService activityLogService;
+    private final CategoryService categoryService;
+
     @Autowired
-    public PersonalExpenseService(PersonalExpenseRepository PersonalExpenseRepository) {
+    public PersonalExpenseService(PersonalExpenseRepository PersonalExpenseRepository, ActivityLogService activityLogService, CategoryService categoryService) {
         this.PersonalExpenseRepository = PersonalExpenseRepository;
+        this.activityLogService = activityLogService;
+        this.categoryService = categoryService;
     }
 
     public List<PersonalExpense> getUserPersonalExpense(User userId) {
@@ -125,6 +132,16 @@ public class PersonalExpenseService {
 
     public void addNewPersonalExpense(PersonalExpense PersonalExpense) {
         PersonalExpenseRepository.save(PersonalExpense);
+        
+        Category category= categoryService.findCategoryByID(PersonalExpense.getCategoryId().getCategoryId());
+        
+      //add activity log
+        ActivityLog log= new ActivityLog();
+        
+        log.setUserId(PersonalExpense.getUserId());
+        log.setMessage("You added a new personal expense of '"+ PersonalExpense.getAmount() +"' under the category: '"+ category.getCategoryName()+"'");
+        log.setCreatedAt(new Date(System.currentTimeMillis()));
+        activityLogService.addActivityLog(log);
     }
 
     public void deletePersonalExpense(int PersonalExpenseId) {

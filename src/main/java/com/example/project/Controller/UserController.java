@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.project.Model.User;
+import com.example.project.Model.UserSession;
 import com.example.project.Service.UserService;
 
 import net.minidev.json.JSONObject;
@@ -21,10 +22,12 @@ import net.minidev.json.JSONObject;
 public class UserController {
 
     private final UserService userService;
+    private final UserSession userSession;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserSession userSession) {
         this.userService = userService;
+        this.userSession = userSession;
     }
 
     @GetMapping(path = "/showUsers")
@@ -38,8 +41,14 @@ public class UserController {
     }
 
     @PostMapping(path = "/loginUser")
-    public JSONObject loginUser(@RequestBody Map<String, Object> body) {
-        return userService.Login(body.get("email").toString(), body.get("password").toString());
+    public User loginUser(@RequestBody Map<String, Object> body) {
+        //return userService.Login(body.get("email").toString(), body.get("password").toString());
+         User user= userService.Login(body.get("email").toString(), body.get("password").toString());
+         
+         // Set the user details in the session-scoped bean
+         userSession.setUserDetails(user);
+         
+         return user;
     }
 
     @PostMapping("/addUser")

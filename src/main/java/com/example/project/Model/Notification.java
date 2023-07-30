@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-@JsonPropertyOrder({"notification_id, title, message, data, sender_id, recipient_token, reciever_id"})
+@JsonPropertyOrder({"notification_id, title, message, group_id, reciever_id"})
 
 @Entity
 @Table(name = "Notification")
@@ -44,8 +44,8 @@ public class Notification implements Serializable{
     private String message;
     
     @OneToOne
-    @JoinColumn(name = "sender_id", referencedColumnName = "user_id")
-    private User senderId;
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
+    private Group groupId;
     
     @OneToOne
     @JoinColumn(name = "reciever_id", referencedColumnName = "user_id")
@@ -56,20 +56,20 @@ public class Notification implements Serializable{
 		super();
 	}
 
-    public Notification(int notificationId, String title, String message, User senderId, User recieverId) {
+    public Notification(int notificationId, String title, String message, Group groupId, User recieverId) {
         super();
         this.notificationId = notificationId;
         this.title = title;
         this.message = message;
-        this.senderId=senderId;
+        this.groupId=groupId;
         this.recieverId= recieverId;
     }
 
-    public Notification(String title, String message, User senderId, User recieverId) {
+    public Notification(String title, String message, Group groupId, User recieverId) {
         super();
         this.title = title;
         this.message = message;
-        this.senderId=senderId;
+        this.groupId=groupId;
         this.recieverId= recieverId;
     }
 
@@ -104,22 +104,22 @@ public class Notification implements Serializable{
         this.message = message;
     }
 
-    @JsonGetter("senderId")
-    public User getSenderId() {
-        return senderId;
+    @JsonGetter("group_id")
+    public Group getGroupId() {
+        return groupId;
     }
 
-    @JsonSetter("senderId")
-    public void setSenderId(User senderId) {
-        this.senderId = senderId;
+    @JsonSetter("group_id")
+    public void setGroupId(Group groupId) {
+        this.groupId = groupId;
     }
 
-    @JsonGetter("recieverId")
+    @JsonGetter("reciever_id")
     public User getRecieverId() {
         return recieverId;
     }
 
-    @JsonSetter("recieverId")
+    @JsonSetter("reciever_id")
     public void setRecieverId(User recieverId) {
         this.recieverId = recieverId;
     }

@@ -57,8 +57,8 @@ public class UserService {
 
     //login user
     @Transactional
-    public JSONObject Login(String email, String password) {
-        JSONObject jsonObject = new JSONObject();
+    public User Login(String email, String password) {
+        //JSONObject jsonObject = new JSONObject();
         Optional<User> userOptional = userRepository.findUserByEmail(email);
 
         if (userOptional.isPresent()) {
@@ -66,15 +66,21 @@ public class UserService {
             String passwordString = userOptional.get().getPassword();
             if (passwordString.equals(password)) {
                 User user = userOptional.get();
-                jsonObject.put("message", "Successful Login !! ");
-                jsonObject.put("user_id", user.getUserId());
-                jsonObject.put("user_name", user.getUserName());
-                jsonObject.put("name", user.getName());
-                jsonObject.put("email", user.getEmail());
-                return jsonObject;
+                /*
+                 * jsonObject.put("message", "Successful Login !! ");
+                 * jsonObject.put("user_id", user.getUserId());
+                 * jsonObject.put("user_name", user.getUserName());
+                 * jsonObject.put("name", user.getName());
+                 * jsonObject.put("email", user.getEmail());
+                 * return jsonObject;
+                 */
+                return user;
             }
         }
-        jsonObject.put("error", "Email or Password is invalid");
-        return jsonObject;
+        return null;
+        /*
+         * jsonObject.put("error", "Email or Password is invalid");
+         * return jsonObject;
+         */
     }
 }

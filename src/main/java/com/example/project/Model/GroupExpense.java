@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
 @Table(name = "GroupExpenses")
-public class GroupExpense extends Expense implements Serializable{
+public class GroupExpense extends Expense implements Serializable {
 
     private static final long serialVersionUID = -1244383128993878686L;
 
@@ -37,18 +37,18 @@ public class GroupExpense extends Expense implements Serializable{
     @OneToOne
     @JoinColumn(name = "group_id", referencedColumnName = "group_id")
     private Group groupId;
-    
+
     @OneToOne
     @JoinColumn(name = "paid_by", referencedColumnName = "user_id")
     private User paidBy;
-    
+
     @ElementCollection
-    @CollectionTable(name = "group_expenses_participants", joinColumns = @JoinColumn(name = "group_expense_id"))
+    @CollectionTable(name = "group_expenses_participants", joinColumns = @JoinColumn(name = "group_expenses_id"))
     private List<User> participants;
-    
+
     @ElementCollection
-    @CollectionTable(name = "group_expenses_amount_owed", joinColumns = @JoinColumn(name = "group_expense_id"))
-    private Map<User, Double> amountOwedByParticipants;
+    @CollectionTable(name = "group_expenses_amount_owed", joinColumns = @JoinColumn(name = "group_expenses_id"))
+    private Map<User, AmountOwedByUser> amountOwedByParticipants;
 
     public GroupExpense() {
         super();
@@ -60,7 +60,7 @@ public class GroupExpense extends Expense implements Serializable{
         this.groupId = groupId;
         this.paidBy = paidBy;
     }
-    
+
     public GroupExpense(Group groupId, User paidBy) {
         super();
         this.groupId = groupId;
@@ -96,20 +96,20 @@ public class GroupExpense extends Expense implements Serializable{
     public void setPaidBy(User paidBy) {
         this.paidBy = paidBy;
     }
-    
+
     public List<User> getParticipants() {
         return participants;
     }
-    
+
     public void setParticipants(List<User> participants) {
         this.participants = participants;
     }
 
-    public Map<User, Double> getAmountOwedByParticipants() {
+    public Map<User, AmountOwedByUser> getAmountOwedByParticipants() {
         return amountOwedByParticipants;
     }
 
-    public void setAmountOwedByParticipants(Map<User, Double> amountOwedByParticipants) {
+    public void setAmountOwedByParticipants(Map<User, AmountOwedByUser> amountOwedByParticipants) {
         this.amountOwedByParticipants = amountOwedByParticipants;
     }
 }

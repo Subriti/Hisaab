@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.project.Model.ActivityLog;
 import com.example.project.Model.Group;
 import com.example.project.Model.MemberList;
 import com.example.project.Model.User;
@@ -18,11 +19,14 @@ public class GroupService {
 
     private final GroupRepository GroupRepository;
     private final MemberListRepository memberListRepository;
+    
+    private final ActivityLogService activityLogService;
 
     @Autowired
-    public GroupService(GroupRepository GroupRepository, MemberListRepository memberListRepository) {
+    public GroupService(GroupRepository GroupRepository, MemberListRepository memberListRepository, ActivityLogService activityLogService) {
         this.GroupRepository = GroupRepository;
         this.memberListRepository = memberListRepository;
+        this.activityLogService = activityLogService;
     }
 
     public List<Group> getUserGroup(User userId) {
@@ -48,6 +52,13 @@ public class GroupService {
         memberList.setGroupId(group2);
         memberList.setMemberUserId(Group.getGroupAdminUser());
         memberListRepository.save(memberList);
+        
+        //add activity log
+        ActivityLog log= new ActivityLog();
+        log.setUserId(Group.getGroupAdminUser());
+        log.setMessage("You created a new group '"+Group.getGroupName()+"'");
+        log.setCreatedAt(Group.getCreatedAt());
+        activityLogService.addActivityLog(log);
     }
 
     public void deleteGroup(int GroupId) {

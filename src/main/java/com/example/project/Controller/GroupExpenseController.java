@@ -63,8 +63,6 @@ public class GroupExpenseController {
         GroupExpenseService.updateGroupExpense(groupExpense);
     }
 
-    // existing code modifications
-
     @PutMapping(path = "/addSplitParticipants/{GroupExpenseId}")
     public GroupExpense addParticipants(@PathVariable("GroupExpenseId") int GroupExpenseId,
             @RequestBody List<User> participants) {
@@ -79,5 +77,15 @@ public class GroupExpenseController {
     @PutMapping(path = "/balance/{GroupExpenseId}")
     public Double getBalance(@PathVariable("GroupExpenseId") int GroupExpenseId) {
         return GroupExpenseService.getsBackBalance(GroupExpenseId);
+    }
+    
+    @PostMapping(path = "/paymentReminder/{GroupExpenseId}")
+    public void remindPayment(@PathVariable("GroupExpenseId") int GroupExpenseId, User userId) {
+        GroupExpenseService.remindForPayment(GroupExpenseId, userId);
+    }
+    
+    @PostMapping(path = "/settlePayment/{GroupExpenseId}")
+    public void settlePayment(@PathVariable("GroupExpenseId") int GroupExpenseId, User userId) {
+        GroupExpenseService.settlePayment(GroupExpenseId, userId);
     }
 }
